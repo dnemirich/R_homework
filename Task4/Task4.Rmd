@@ -1,0 +1,28 @@
+---
+title: "Task4"
+author: "Darya Nemirich"
+date: '13 апреля 2019 г '
+output: pdf_document
+---
+
+```{r}
+weather <- readRDS("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Task4/weather.rds")
+```
+```{r}
+summary(weather)
+head(weather)
+str(weather)
+```
+```{r}
+weather$X <- NULL
+head(weather)
+```
+
+```{r}
+
+library(tidyr)
+weather_tidy <- gather(weather, day, value, X1:X31)
+weather_tidy <- spread(weather_tidy, measure, value)
+head(weather_tidy)
+
+```
