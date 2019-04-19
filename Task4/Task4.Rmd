@@ -14,7 +14,8 @@ head(weather)
 str(weather)
 complete.cases(weather)
 ```
-There are several NAs in the table. There is an additional column named X, which is, as I suppose, represents a day of the measurement. Variables are rows, not columns. Numeric observations are not numeric.
+There are several NAs in the table. There is an additional column named X, which is, as I suppose, represents a day of the measurement. 
+Variables are rows, not columns. Numeric observations are not numeric.
 
 Let's get rid of X varible.
 ```{r}
@@ -34,7 +35,8 @@ weather_tidy <- spread(weather_tidy, measure, value)
 head(weather_tidy, 15)
 
 ```
-Now our variables on the right places. Replace T letters in precipitation column with NA's. Get rid of the x letter in day number.
+Now our variables on the right places. Replace T letters in precipitation column with NA's. 
+Get rid of the x letter in day number.
 ```{r}
 weather_tidy$PrecipitationIn <- gsub('T', NA, weather_tidy$PrecipitationIn, ignore.case = TRUE)
 weather_tidy <- mutate(weather_tidy, day=extract_numeric(day))
@@ -49,7 +51,8 @@ str(weather_tidy)
 
 
 ```
-Let's plot our numeric values. As we can see, there is the outlier in Max. Humidity column. There is an additional zero in 138 observation. Let's get rid of it.
+Let's plot our numeric values. As we can see, there is the outlier in Max. 
+Humidity column. There is an additional zero in 138 observation. Let's get rid of it.
 ```{r}
 boxplot(weather_tidy[,c(1,2,4,6:25)])
 weather_tidy$Max.Humidity
