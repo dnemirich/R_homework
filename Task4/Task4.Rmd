@@ -9,20 +9,45 @@ output: pdf_document
 weather <- readRDS("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Task4/weather.rds")
 ```
 ```{r}
-summary(weather)
 head(weather)
 str(weather)
+complete.cases(weather)
 ```
 ```{r}
 weather$X <- NULL
-head(weather)
 ```
 
 ```{r}
 
 library(tidyr)
+library(dplyr)
+
+```
+
+```{r}
 weather_tidy <- gather(weather, day, value, X1:X31)
 weather_tidy <- spread(weather_tidy, measure, value)
+head(weather_tidy, 15)
+
+```
+
+```{r}
+weather_tidy$PrecipitationIn <- gsub('T', NA, weather_tidy$PrecipitationIn, ignore.case = TRUE)
+weather_tidy <- mutate(weather_tidy, day=extract_numeric(day))
 head(weather_tidy)
 
+```
+```{r}
+
+weather_tidy[,c(1,2,4,6:25)] <- lapply(weather_tidy[,c(1,2,4,6:25)], as.numeric)
+str(weather_tidy)
+
+
+```
+
+```{r}
+boxplot(weather_tidy[,c(1,2,4,6:25)])
+weather_tidy$Max.Humidity
+weather_tidy[138, 8] <- 100
+summary(weather_tidy$Max.Humidity)
 ```
