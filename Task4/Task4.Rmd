@@ -4,39 +4,44 @@ author: "Darya Nemirich"
 date: '13 апреля 2019 г '
 output: pdf_document
 ---
-
+Upload the dataframe.
 ```{r}
 weather <- readRDS("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Task4/weather.rds")
 ```
+Let's look on the table and on the information about its variables.
 ```{r}
 head(weather)
 str(weather)
 complete.cases(weather)
 ```
+There are several NAs in the table. There is an additional column named X, which is, as I suppose, represents a day of the measurement. Variables are rows, not columns. Numeric observations are not numeric.
+
+Let's get rid of X varible.
 ```{r}
 weather$X <- NULL
 ```
-
+Uploading necessary libraries
 ```{r}
 
 library(tidyr)
 library(dplyr)
 
 ```
-
+Transform the data from wide to long and then vice versa. 
 ```{r}
 weather_tidy <- gather(weather, day, value, X1:X31)
 weather_tidy <- spread(weather_tidy, measure, value)
 head(weather_tidy, 15)
 
 ```
-
+Now our variables on the right places. Replace T letters in precipitation column with NA's. Get rid of the x letter in day number.
 ```{r}
 weather_tidy$PrecipitationIn <- gsub('T', NA, weather_tidy$PrecipitationIn, ignore.case = TRUE)
 weather_tidy <- mutate(weather_tidy, day=extract_numeric(day))
 head(weather_tidy)
 
 ```
+Now I will make our columns with numeric data real numeric.
 ```{r}
 
 weather_tidy[,c(1,2,4,6:25)] <- lapply(weather_tidy[,c(1,2,4,6:25)], as.numeric)
@@ -44,7 +49,7 @@ str(weather_tidy)
 
 
 ```
-
+Let's plot our numeric values. As we can see, there is the outlier in Max. Humidity column. There is an additional zero in 138 observation. Let's get rid of it.
 ```{r}
 boxplot(weather_tidy[,c(1,2,4,6:25)])
 weather_tidy$Max.Humidity
