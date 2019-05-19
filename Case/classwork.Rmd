@@ -1,0 +1,80 @@
+---
+title: "Classwork"
+author: "Darya Nemirich"
+date: '10 мая 2019 г '
+output: html_document
+---
+
+```{r}
+load("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Classwork1005/CHIS2009_reduced_2.Rdata")
+```
+```{r}
+head(adult)
+str(adult)
+
+```
+```{r}
+adult$RBMI <- as.factor(adult$RBMI)
+
+str(adult)
+```
+
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+plot1 <- ggplot(adult, aes(x = SRAGE_P, fill = RBMI)) + 
+  geom_histogram(binwidth = 1) + 
+  xlab("age")
+
+plot1
+```
+```{r}
+library(dplyr)
+```
+
+```{r}
+adult_tidy <- adult %>% 
+  filter(SRAGE_P < 85) %>% 
+  filter(BMI_P < 52 & BMI_P >= 16) %>% 
+  mutate(RACEHPR2 = factor(RACEHPR2,
+                           levels = c(1, 4, 5, 6),
+                           labels = c("Latino", "Asian", "African American", "White"))) %>% 
+  mutate(RBMI = factor(RBMI,
+                       levels = c(1, 2, 3, 4),
+                       labels = c("Under", "Normal", "Over", "Obese")))
+
+  
+str(adult_tidy)
+
+```
+
+```{r}
+plot2 <- ggplot(adult_tidy, aes(x = SRAGE_P, fill = RBMI)) + 
+  geom_histogram(binwidth = 1, position = "stack") + 
+  xlab("age") +
+  facet_grid(RBMI ~ .) +
+  scale_fill_brewer("BMI group", palette = "Reds") +
+  theme_classic() +
+  theme(strip.text.y = element_blank())
+
+plot2
+```
+
+```{r}
+plot3 <- ggplot(adult_tidy, aes(x = SRAGE_P, fill = RBMI)) + 
+  geom_histogram(position = "fill", bins = 66) + 
+  xlab("age") +
+  ylab("percentage") +
+  facet_grid(RBMI ~ .) +
+  scale_fill_brewer("BMI group", palette = "Reds") +
+  theme_classic() +
+  theme(strip.text.y = element_blank())
+
+plot3
+```
+
+
