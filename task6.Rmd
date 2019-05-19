@@ -1,0 +1,79 @@
+---
+title: "Task6"
+author: "Darya Nemirich"
+date: '10 мая 2019 г '
+output: html_document
+---
+```{r}
+library("ggplot2")
+library("dplyr")
+```
+
+```{r}
+library("datasets")
+df <- iris
+head(df)
+```
+
+```{r}
+iris_long <- df %>% 
+  transmute(Species, Part = 'Petal', Length = Petal.Length, Width = Petal.Width)
+iris_long_2 <- df %>% 
+  transmute(Species, Part = 'Sepal', Length = Sepal.Length, Width = Sepal.Width)
+
+iris_long <- rbind(iris_long, iris_long_2)
+
+
+head(iris_long)
+str(iris_long)
+
+```
+
+
+```{r}
+ggplot(iris_long, aes(x = Length, 
+                      y = Width,
+                      color = Part)) +
+  geom_point()
+```
+
+```{r}
+library('gapminder')
+head(gapminder)
+```
+```{r}
+gapminder_2007 <- gapminder %>% 
+  filter(year == 2007)
+```
+
+```{r} 
+ggplot(gapminder_2007, aes(x = gdpPercap,
+                           y = lifeExp,
+                           color = continent)) +
+  geom_point(aes(size = pop)) +
+  scale_x_log10(breaks = c(1000, 10000))
+```
+```{r}
+gapminder_new <- gapminder %>%
+  group_by(year, continent) %>%
+  summarise(popTotal = sum(pop / 1000000), meanLifeExp = mean(lifeExp))
+
+head(gapminder_new) 
+```
+
+```{r}
+ggplot(gapminder_new, aes(x = year,
+                          y = meanLifeExp,
+                          color = continent)) +
+  geom_point(size = 3) +
+  ylim(0, max(gapminder_new$meanLifeExp))
+```
+
+```{r}
+ggplot(gapminder_new, aes(x = year,
+                          y = meanLifeExp,
+                          color = continent)) +
+  geom_line(size = 2) +
+  ylim(0, max(gapminder_new$meanLifeExp))
+```
+
