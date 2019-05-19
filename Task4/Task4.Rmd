@@ -2,7 +2,7 @@
 title: "Task4"
 author: "Darya Nemirich"
 date: '13 апреля 2019 г '
-output: pdf_document
+output: html_document
 ---
 Upload the dataframe.
 ```{r}
