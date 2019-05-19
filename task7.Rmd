@@ -1,0 +1,42 @@
+---
+title: "Task7"
+author: "Darya Nemirich"
+date: '10 мая 2019 г '
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(gapminder)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+head(gapminder)
+```
+
+```{r}
+ggplot(gapminder, aes(x = gdpPercap,
+                      y = lifeExp,
+                      color = continent,
+                      size = pop)) +
+  geom_point() +
+  scale_x_log10() +
+  facet_wrap(year ~ .)
+```
+
+```{r}
+library(datasets)
+head(airquality)
+```
+```{r}
+airquality %>%  tidyr::gather("Measure", "Value", 1:4) %>% 
+  ggplot(aes(x = Day,
+             y = Value,
+             color = Measure)) + 
+  geom_point(na.rm = TRUE) +
+  geom_line() +
+  facet_grid(Measure ~ Month, scales = "free_y")
+```
+
