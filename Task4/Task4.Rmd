@@ -1,8 +1,10 @@
 ---
 title: "Task4"
 author: "Darya Nemirich"
-date: '13 апреля 2019 г '
-output: html_document
+date: '13 May 2019'
+output:
+  pdf_document: default
+  html_document: default
 ---
 Upload the dataframe.
 ```{r}

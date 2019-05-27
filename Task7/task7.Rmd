@@ -1,8 +1,8 @@
 ---
 title: "Task7"
 author: "Darya Nemirich"
-date: '10 мая 2019 г '
-output: html_document
+date: "10 May 2019"
+output: pdf_document
 ---
 
 ```{r}
