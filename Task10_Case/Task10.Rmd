@@ -1,0 +1,75 @@
+---
+title: "Task10"
+author: "Darya Nemirich"
+date: '29 May 2019'
+output: pdf_document
+---
+
+```{r}
+anscombe <- readRDS("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Task10_Case/anscombe.Rds")
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+str(anscombe)
+summary(anscombe)
+```
+```{r}
+ggplot(data = anscombe, aes(x = x,
+                            y = y)) +
+  geom_point() +
+  facet_wrap(set ~ .) +
+  geom_smooth(method = "lm", se = F)
+```
+
+```{r}
+anscombe %>% 
+  group_by(set) %>% 
+  summarise(
+    x_mean = mean(x),
+    y_mean = mean(y),
+    x_sd = sd(x),
+    y_sd = sd(y)
+  )
+```
+```{r}
+anscombe %>% 
+  group_by(set) %>% 
+  summarise(
+    correlation = cor(x, y),
+    p_value = cor.test(x, y)$p.value)
+```
+```{r}
+anscombe %>% 
+  group_by(set) %>% 
+  summarise(
+    cor_pearson = cor(x, y, method = "pearson"),
+    cor_kendall = cor(x, y, method = "kendall"),
+    cor_spearman = cor(x, y, method = "spearman")
+  )
+
+```
+
+```{r}
+airq <- read.csv2("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Task10_Case/AirQualityUCI.csv")
+```
+
+```{r}
+head(airq)
+str(airq)
+summary(airq)
+```
+```{r}
+hist(airq$PT08.S1.CO.)
+hist(airq$NMHC.GT.)
+```
+
+
+
+
+
+
