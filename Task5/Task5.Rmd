@@ -1,0 +1,36 @@
+---
+title: "Task5"
+author: "Darya Nemirich"
+date: '25 April 2019'
+output: pdf_document
+---
+```{r}
+library(dplyr)
+```
+
+```{r}
+manage_df_3 <- function(df, row_selection, column_selection, operation){
+  df_subset <- data.frame(df[row_selection, column_selection])
+  calculation_function <- function(x, operation){
+    if (is.numeric(x)) {
+      return(operation(x))
+    } else {
+      return(table(x))
+      }
+    }
+  result <- df_subset %>% data.frame() %>% list()
+  result[2] <- df_subset %>% sapply(calculation_function, operation)
+  
+  return(result)
+}
+```
+
+```{r}
+df4 <- iris
+head(df4)
+```
+```{r}
+manage_df_3(df4, c(1:6), c('Sepal.Length', 'Sepal.Width', 'Species'), sum)
+```
+
+
