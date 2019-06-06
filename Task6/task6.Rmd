@@ -76,4 +76,20 @@ ggplot(gapminder_new, aes(x = year,
   geom_line(size = 2) +
   ylim(0, max(gapminder_new$meanLifeExp))
 ```
+```{r}
+gapminder_Europe <- gapminder %>% 
+  filter(continent == 'Europe', year == 1987)
+
+head(gapminder_Europe)
+```
+
+```{r}
+ggplot(gapminder_Europe, aes(x = country,
+                             y = pop,
+                             fill = country)) +
+  geom_bar(stat = 'Identity') +
+  theme(axis.text.x = element_text(angle = -90)) +
+  ggtitle('Population in Europe in 1987')
+```
+
 
