@@ -1,12 +1,12 @@
 ---
 title: "Classwork"
 author: "Darya Nemirich"
-date: '10 мая 2019 г '
-output: html_document
+date: '10 May 2019'
+output: pdf_document
 ---
 
 ```{r}
-load("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Classwork1005/CHIS2009_reduced_2.Rdata")
+load("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Case/CHIS2009_reduced_2.Rdata")
 ```
 ```{r}
 head(adult)
@@ -75,6 +75,31 @@ plot3 <- ggplot(adult_tidy, aes(x = SRAGE_P, fill = RBMI)) +
   theme(strip.text.y = element_blank())
 
 plot3
+```
+```{r}
+library(reshape2)
+```
+
+```{r}
+frequencies_table <- dcast(adult_tidy, SRAGE_P ~ RBMI, length)
+head(frequencies_table)
+```
+```{r}
+melted_freq <- reshape2::melt(frequencies_table, id.vars="SRAGE_P", measured.vars=c("Under", "Normal", "Over", "Obese"))
+
+head(melted_freq)
+```
+```{r}
+plot4 <- ggplot(melted_freq, aes(x = SRAGE_P, y = value, fill = variable)) + 
+  geom_col() + 
+  xlab('age') +
+  ylab('count') +
+  facet_grid(. ~ variable) +
+  scale_fill_brewer("BMI group", palette = "Reds") +
+  theme_classic() +
+  theme(strip.text.y = element_blank())
+
+plot4
 ```
 
 
