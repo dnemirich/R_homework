@@ -1,3 +1,12 @@
+---
+title: "Task3"
+author: "Darya Nemirich"
+date: '6 April 2019'
+output: pdf_document
+---
+
+
+```{r}
 manage_df <- function(df, row_selection, column_selection, operation){
   df_subset <- data.frame(df[row_selection, column_selection])
   calculation_function <- function(x, operation){
@@ -10,4 +19,14 @@ manage_df <- function(df, row_selection, column_selection, operation){
   applying <- sapply(df_subset, calculation_function, operation)
   return(list(df_subset, applying))
 }
+```
+
+```{r}
+df3 <- mtcars
+head(df3)
+```
+
+```{r}
+manage_df(df3, c(1:15), c('mpg', 'disp'), sum)
+```
 

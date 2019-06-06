@@ -1,18 +1,48 @@
+---
+title: "Task2"
+author: "Darya Nemirich"
+date: '30 March 2019'
+output: pdf_document
+---
+
+```{r}
 manage_df <- function(df, row_selection, column_selection){
   df_subset <- df[row_selection, column_selection]
   for (i in 1:ncol(df_subset)) {
     if (is.numeric(df_subset[,i])) {
-    print(sum(df_subset[,i]))
+    print(list(sum(df_subset[,i])))
     } else {
       print(table(df_subset[,i]))}
   }
   
 }
+```
 
+```{r}
 library("datasets")
-df <- iris
-manage_df(df, c(1,2,3), c(3,4,5))
+```
 
+```{r}
+df <- iris
+head(df)
+
+df[c(1,2,3), c(3,4,5)]
+
+
+```
+
+
+
+```{r}
+manage_df(df, c(1,2,3), c(3,4,5))
+```
+
+```{r}
 df2 <- Theoph
+head(df2)
+df2[1:20, c(T, F)]
+```
+```{r}
 manage_df(df2, 1:20, c(T, F))
+```
 
