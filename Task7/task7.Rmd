@@ -40,3 +40,14 @@ airquality %>%  tidyr::gather("Measure", "Value", 1:4) %>%
   facet_grid(Measure ~ Month, scales = "free_y")
 ```
 
+```{r}
+some_data <- beaver1
+head(some_data)
+
+```
+```{r}
+ggplot(some_data, aes(x = temp)) +
+  geom_histogram(bins = 15) +
+  theme_classic()
+```
+
