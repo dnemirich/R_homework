@@ -4,7 +4,7 @@ author: "Darya Nemirich"
 date: '29 May 2019'
 output: pdf_document
 ---
-
+Part 1
 ```{r}
 anscombe <- readRDS("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Task10_Case/anscombe.Rds")
 ```
@@ -53,6 +53,7 @@ anscombe %>%
   )
 
 ```
+Part 2
 
 ```{r}
 airq <- read.csv2("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Task10_Case/AirQualityUCI.csv")
@@ -63,13 +64,240 @@ head(airq)
 str(airq)
 summary(airq)
 ```
+
 ```{r}
-hist(airq$PT08.S1.CO.)
-hist(airq$NMHC.GT.)
+airq_new <- airq %>% 
+  select(-c(X, X.1)) %>% 
+  na.omit()
+
+
+head(airq_new)
+
+summary(airq_new)
+```
+
+
+
+```{r}
+library(DataExplorer)
+```
+
+```{r}
+plot_histogram(airq_new)
+```
+```{r}
+airq_new <- airq_new %>% 
+  na_if(-200) %>% 
+  na_if(-200.0) %>% 
+  na.omit()
+
+summary(airq_new)
+plot_histogram(airq_new)
+
+
+```
+
+```{r}
+airq_new[, c(3:15)] <- lapply(airq_new[,c(3:15)], as.numeric)
+str(airq_new)
+```
+
+```{r}
+library(GGally)
+```
+
+```{r}
+ggcorr(airq_new, nbreaks = 4, 
+       label = TRUE, 
+       hjust = 0.8)
+```
+
+```{r}
+library(corrplot)
+```
+
+```{r}
+visual_cor <- function(d){
+  cormat <- cor(d, use = "pairwise.complete.obs")
+  pvalmat <- cor.mtest(d)$p
+  
+  corrplot(abs(cormat),
+           method = "color",
+           order = "hclust",
+           addCoef.col = "black",
+           tl.col = "black", tl.srt = 90,
+           p.mat = pvalmat, sig.level = 0.05,
+           insig = "blank", diag = FALSE)
+}
+```
+
+```{r}
+visual_cor(airq_new[, -c(1,2)])
+```
+
+```{r}
+lm_1 <- lm(C6H6.GT. ~ CO.GT., data = airq_new)
+summary(lm_1)
+
+ggplot(lm_1, aes(x = CO.GT., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+```{r}
+lm_2 <- lm(C6H6.GT. ~ PT08.S1.CO., data = airq_new)
+summary(lm_2)
+
+ggplot(lm_2, aes(x = PT08.S1.CO., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+```{r}
+lm_3 <- lm(C6H6.GT. ~ NMHC.GT., data = airq_new)
+summary(lm_3)
+
+ggplot(lm_3, aes(x = NMHC.GT., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+```{r}
+lm_4 <- lm(C6H6.GT. ~ PT08.S2.NMHC., data = airq_new)
+summary(lm_4)
+
+ggplot(lm_4, aes(x = PT08.S2.NMHC., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+```{r}
+lm_5 <- lm(C6H6.GT. ~ NOx.GT., data = airq_new)
+summary(lm_5)
+
+ggplot(lm_5, aes(x = NOx.GT., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+```{r}
+lm_6 <- lm(C6H6.GT. ~ PT08.S3.NOx., data = airq_new)
+summary(lm_6)
+
+ggplot(lm_6, aes(x = PT08.S3.NOx., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+```{r}
+lm_7 <- lm(C6H6.GT. ~ NO2.GT., data = airq_new)
+summary(lm_7)
+
+ggplot(lm_7, aes(x = NO2.GT., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+```{r}
+lm_8 <- lm(C6H6.GT. ~ PT08.S4.NO2., data = airq_new)
+summary(lm_8)
+
+ggplot(lm_8, aes(x = PT08.S4.NO2., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+```{r}
+lm_9 <- lm(C6H6.GT. ~ PT08.S5.O3., data = airq_new)
+summary(lm_9)
+
+ggplot(lm_9, aes(x = PT08.S5.O3., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  geom_line(aes(y = .fitted), color = "red", size = 1)
+```
+
+
+```{r}
+l_model <- lm(C6H6.GT. ~ ., data = airq_new[,-c(1,2)])
+
+summary(l_model)
+```
+```{r}
+ggplot(l_model$model, aes_string(x = names(l_model$model)[2], y = names(l_model$model)[1])) + 
+  geom_point() +
+  stat_smooth(method = "lm", col = "red") +
+  labs(title = paste("Adj R2 = ",signif(summary(l_model)$adj.r.squared, 5),
+                     "Intercept =",signif(l_model$coef[[1]],5 ),
+                     " Slope =",signif(l_model$coef[[2]], 5),
+                     " P =",signif(summary(l_model)$coef[2,4], 5)))
+```
+
+```{r}
+set.seed(42)
+
+new_dataset <- airq_new[,3:15]
+
+sample <- sample.int(n = nrow(new_dataset), 
+                     size = floor(.75*nrow(new_dataset))) 
+
+training_set  <- new_dataset[sample,]
+
+test_set  <- new_dataset[-sample,]
+
+
+new_fit<- lm(C6H6.GT. ~ PT08.S4.NO2., data=training_set)
+summary(new_fit)
+
+
+```
+```{r}
+str(summary(new_fit))
+```
+
+```{r} 
+ggplot(data = training_set, aes(x = PT08.S4.NO2., y = C6H6.GT.))+
+  geom_point() +
+  geom_smooth(method = "lm")
 ```
 
 
 
 
 
+```{r}
+pred <- predict(new_fit, newdata = test_set)
+head(pred)
+
+
+```
+
+```{r}
+test_set$C6H6.GT._pred <- pred
+head(test_set)
+```
+
+```{r}
+ggplot(training_set, aes(x = PT08.S4.NO2., y = C6H6.GT.)) +
+  geom_point() +
+  geom_smooth(method = "lm", color = "red" ) +
+  geom_point(data = test_set, aes(y = C6H6.GT.), color = "green") +
+  theme_bw() +
+  geom_label(aes(x = 80, y = 200), hjust = 0, vjust = 1, 
+             label = paste("Adjusted R2 = ",signif(summary(new_fit)$adj.r.squared, 5),
+                                               "\nIntercept =",signif(new_fit$coef[[1]],5 ),
+                                               " \nSlope =",signif(new_fit$coef[[2]], 5),
+                                               " \nP =",signif(summary(new_fit)$coef[2,4], 5)))
+```
+```{r}
+
+```
 

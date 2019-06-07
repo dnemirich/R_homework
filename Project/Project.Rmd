@@ -1,0 +1,242 @@
+---
+title: "Project"
+author: "Darya Nemirich"
+output: pdf_document
+---
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(DataExplorer)
+library(ggpubr)
+```
+
+
+
+```{r}
+neurons <- read.csv2("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Project/data.csv")
+neurons2 <- read.csv2("D:/Bioinformatics and System Biology/2nd term/R/R_classwork/Project/data2.csv")
+View(neurons)
+View(neurons2)
+```
+
+```{r}
+summary(neurons)
+str(neurons)
+```
+```{r}
+levels(neurons$Treatment)
+```
+```{r}
+neurons$Treatment <- ordered(neurons$Treatment, 
+                             levels = c('control', 'nutlin', 'GNF', 'GNF_nutlin'))
+```
+
+```{r}
+plot_histogram(neurons)
+
+```
+
+```{r}
+neurites_summary <- neurons %>% 
+  group_by(Treatment) %>% 
+  summarise(
+    count = n(),
+    neurite_mean = mean(Neurite_length),
+    neurite_sd = sd(Neurite_length),
+    neurite_median = median(Neurite_length),
+    IQR = IQR(Neurite_length)
+  )
+
+neurites_summary
+```
+```{r}
+soma_summary <- neurons %>% 
+  group_by(Treatment) %>% 
+  summarise(
+    count = n(),
+    soma_mean = mean(Soma_diameter, na.rm = TRUE),
+    soma_sd = sd(Soma_diameter, na.rm = TRUE),
+    soma_median = median(Soma_diameter, na.rm = TRUE),
+    IQR = IQR(Soma_diameter, na.rm = TRUE)
+  )
+
+soma_summary
+```
+
+```{r}
+control <- subset(neurons, Treatment == 'control')
+shapiro.test(control$Neurite_length)
+
+```
+
+```{r}
+nutlin <- subset(neurons, Treatment == 'nutlin')
+shapiro.test(nutlin$Neurite_length)
+```
+
+```{r}
+GNF <- subset(neurons, Treatment == 'GNF')
+shapiro.test(GNF$Neurite_length)
+```
+
+```{r}
+GNF_nutlin <- subset(neurons, Treatment == 'GNF_nutlin')
+shapiro.test(GNF_nutlin$Neurite_length)
+```
+
+```{r}
+ggboxplot(neurons,
+          x = "Treatment",
+          y = "Neurite_length",
+          color = "Treatment",
+          palette = c("#00AFBB", "#E7B800", "#FC4E07", "#75c675"),
+          order = c("control", "nutlin", "GNF", "GNF_nutlin"),
+          ylab = "Neurite length", xlab = "Treatment")
+```
+```{r}
+ggboxplot(neurons,
+          x = "Treatment",
+          y = "Soma_diameter",
+          color = "Treatment",
+          palette = c("#00AFBB", "#E7B800", "#FC4E07", "#75c675"),
+          order = c("control", "nutlin", "GNF", "GNF_nutlin"),
+          ylab = "Soma diameter", xlab = "Treatment")
+```
+
+```{r}
+ggline(neurons, x = "Treatment", y = "Neurite_length",
+       add = c("mean_se", "jitter"),
+       order = c("control", "nutlin", "GNF", "GNF_nutlin"),
+       ylab = "Neurite length", xlab = "Treatment")
+```
+```{r}
+ggline(neurons, x = "Treatment", y = "Soma_diameter",
+       add = c("mean_se", "jitter"),
+       order = c("control", "nutlin", "GNF", "GNF_nutlin"),
+       ylab = "Soma diameter", xlab = "Treatment")
+```
+
+
+```{r}
+kruskal.test(Neurite_length ~ Treatment, data = neurons)
+kruskal.test(Soma_diameter ~ Treatment, data = neurons)
+```
+
+```{r}
+pairwise.wilcox.test(neurons$Neurite_length, neurons$Treatment, p.adjust.method = "BH")
+pairwise.wilcox.test(neurons$Soma_diameter, neurons$Treatment, p.adjust.method = "BH")
+```
+
+
+
+
+The second dataset
+```{r}
+summary(neurons2)
+str(neurons2)
+```
+```{r}
+levels(neurons2$Treatment)
+```
+```{r}
+neurons2$Treatment <- ordered(neurons2$Treatment, 
+                             levels = c('control', 'nutlin', 'GNF', 'GNF_nutlin'))
+```
+
+```{r}
+plot_histogram(neurons2)
+
+```
+
+```{r}
+neurites_summary_2 <- neurons2 %>% 
+  group_by(Treatment) %>% 
+  summarise(
+    count = n(),
+    neurite_mean = mean(Neurite_length),
+    neurite_sd = sd(Neurite_length),
+    neurite_median = median(Neurite_length),
+    IQR = IQR(Neurite_length)
+  )
+
+neurites_summary_2
+```
+```{r}
+soma_summary_2 <- neurons2 %>% 
+  group_by(Treatment) %>% 
+  summarise(
+    count = n(),
+    soma_mean = mean(Soma_diameter, na.rm = TRUE),
+    soma_sd = sd(Soma_diameter, na.rm = TRUE),
+    soma_median = median(Soma_diameter, na.rm = TRUE),
+    IQR = IQR(Soma_diameter, na.rm = TRUE)
+  )
+
+soma_summary_2
+```
+
+```{r}
+control2 <- subset(neurons2, Treatment == 'control')
+shapiro.test(control2$Neurite_length)
+
+```
+
+```{r}
+nutlin2 <- subset(neurons2, Treatment == 'nutlin')
+shapiro.test(nutlin2$Neurite_length)
+```
+
+```{r}
+GNF2 <- subset(neurons2, Treatment == 'GNF')
+shapiro.test(GNF2$Neurite_length)
+```
+
+```{r}
+GNF_nutlin2 <- subset(neurons2, Treatment == 'GNF_nutlin')
+shapiro.test(GNF_nutlin2$Neurite_length)
+```
+
+```{r}
+ggboxplot(neurons2,
+          x = "Treatment",
+          y = "Neurite_length",
+          color = "Treatment",
+          palette = c("#00AFBB", "#E7B800", "#FC4E07", "#75c675"),
+          order = c("control", "nutlin", "GNF", "GNF_nutlin"),
+          ylab = "Neurite length", xlab = "Treatment")
+```
+```{r}
+ggboxplot(neurons2,
+          x = "Treatment",
+          y = "Soma_diameter",
+          color = "Treatment",
+          palette = c("#00AFBB", "#E7B800", "#FC4E07", "#75c675"),
+          order = c("control", "nutlin", "GNF", "GNF_nutlin"),
+          ylab = "Soma diameter", xlab = "Treatment")
+```
+
+```{r}
+ggline(neurons2, x = "Treatment", y = "Neurite_length",
+       add = c("mean_se", "jitter"),
+       order = c("control", "nutlin", "GNF", "GNF_nutlin"),
+       ylab = "Neurite length", xlab = "Treatment")
+```
+```{r}
+ggline(neurons2, x = "Treatment", y = "Soma_diameter",
+       add = c("mean_se", "jitter"),
+       order = c("control", "nutlin", "GNF", "GNF_nutlin"),
+       ylab = "Soma diameter", xlab = "Treatment")
+```
+
+
+```{r}
+kruskal.test(Neurite_length ~ Treatment, data = neurons2)
+kruskal.test(Soma_diameter ~ Treatment, data = neurons2)
+```
+
+```{r}
+pairwise.wilcox.test(neurons2$Neurite_length, neurons2$Treatment, p.adjust.method = "BH")
+pairwise.wilcox.test(neurons2$Soma_diameter, neurons2$Treatment, p.adjust.method = "BH")
+```
+
